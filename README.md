@@ -40,10 +40,12 @@ This property of the configuration file saecifies the shard group of the node us
 ## Building the Key Value Store
 To build the project clone the project onto your local git and then run the following commands from within the base project folder.
 
+```
 cd distributed-key-value-store
-
+```
+```
 mvn clean install
-
+```
 You'll find the <b>distributed-kv-store-1.0-SNAPSHOT.jar</b> artifact under the target/ folder. Use that to start individual nodes in the distributed cluster.
 
 
@@ -143,7 +145,6 @@ You can retreive data using the following command:
 ``` 
 curl -XGET http://localhost:8800/get/foo
 ``` 
-
 
 
 
