@@ -2,8 +2,11 @@ package com.github.abhinavrohatgi30.dao;
 
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 
+import javax.validation.constraints.Null;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -20,15 +23,22 @@ public class FileDAO implements  DAO{
     private static final String SEPARATOR = "^^";
     private static final String SPLIT_SEPARATOR = "\\^\\^";
 
+    private static final Logger logger = LogManager.getLogger(FileDAO.class);
+
     public FileDAO(String baseFolder) throws IOException{
+        logger.info("Base Folder for Data Store ---------->" +baseFolder);
         init(baseFolder);
     }
 
     private void init(String baseFolder) throws IOException{
         this.baseFolder = new File(baseFolder);
-        this.baseFolder.mkdir();
+        boolean isFolderCreated = this.baseFolder.mkdirs();
+        if(isFolderCreated)
+            logger.debug(String.format("Folders were created for the path : %s ", baseFolder));
         this.dictionaryFile = new File(baseFolder,"dictionary.txt");
-        this.dictionaryFile.createNewFile();
+        boolean isFileCreated = this.dictionaryFile.createNewFile();
+        if(isFileCreated)
+            logger.debug(String.format("Data File was created for the path : %s ", dictionaryFile.getAbsolutePath()));
         readDictionaryFile();
     }
 
@@ -42,13 +52,8 @@ public class FileDAO implements  DAO{
     }
 
     @Override
-    public String read(String key) {
-        String value = null;
-        try {
-            value = dictionary.get(key);
-        }catch (Exception e){
-        }
-        return value;
+    public String read(String key) throws NullPointerException {
+        return dictionary.get(key);
     }
 
     @Override
@@ -58,8 +63,10 @@ public class FileDAO implements  DAO{
                 FileUtils.write(dictionaryFile, String.format("%s%s%s\n", key, SEPARATOR, value),Charset.defaultCharset(),true);
                 dictionary.put(key, value);
             }catch (Exception e){
+                logger.error(String.format("Error writing the key-value pair to file -> %s : %s ", key,value));
                 return 0;
             }
+            logger.info(String.format("key-value pair written to file -> %s : %s ", key,value));
         }
         return 1;
     }

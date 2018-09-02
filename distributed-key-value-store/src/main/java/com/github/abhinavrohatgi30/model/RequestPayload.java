@@ -11,7 +11,7 @@ public class RequestPayload {
     public RequestPayload(String key, String value){
         this.key = key;
         this.value = value;
-        this.requestType = RouteRequestType.PUT;
+        this.requestType = RouteRequestType.POST;
     }
 
     public RequestPayload(String key){

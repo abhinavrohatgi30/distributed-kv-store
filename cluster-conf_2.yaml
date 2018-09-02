@@ -1,0 +1,11 @@
+#Shard Groups : Group of nodes where inter-group nodes act as shards and intra-group nodes act as replicas
+#NOTE: Do not specify the current node as part of the intra-group nodes in the config.
+ShardGroups:
+  1:
+    - localhost:8910
+    - localhost:8900
+  2:
+    - localhost:8810
+    - localhost:8800
+
+MyGroup: 2

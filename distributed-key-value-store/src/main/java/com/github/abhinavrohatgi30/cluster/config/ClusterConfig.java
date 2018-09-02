@@ -2,10 +2,15 @@ package com.github.abhinavrohatgi30.cluster.config;
 
 import com.github.abhinavrohatgi30.cluster.model.Node;
 import com.github.abhinavrohatgi30.cluster.model.ShardGroup;
+import com.github.abhinavrohatgi30.dao.FileDAO;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Configuration;
 import org.yaml.snakeyaml.Yaml;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -14,12 +19,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Configuration
 public class ClusterConfig {
 
     private Map<String, ShardGroup> shardGroups;
     private String myGroup;
 
+    private static final Logger logger = LogManager.getLogger(ClusterConfig.class);
+
     public ClusterConfig(String configPath) throws IOException{
+        logger.debug("Config Path ------------->" + configPath);
         shardGroups = new HashMap<>();
         Yaml clusterConfigYaml  = new Yaml();
         Map<String,Object> clusterConfigMap = clusterConfigYaml.loadAs(FileUtils.readFileToString(new File(configPath), Charset.defaultCharset()), Map.class);
@@ -41,6 +50,7 @@ public class ClusterConfig {
             hashFloor+=diff;
             this.shardGroups.put(groupName,group);
         }
+        logger.info("Cluster Config in Use : %s"+this.toString());
     }
 
     public Map<String,ShardGroup> getShardGroups(){

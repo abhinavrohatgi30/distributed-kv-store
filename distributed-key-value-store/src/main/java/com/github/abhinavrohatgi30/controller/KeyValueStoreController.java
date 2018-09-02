@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.abhinavrohatgi30.model.Response;
 import com.github.abhinavrohatgi30.service.KeyValueStoreService;
+import com.github.abhinavrohatgi30.util.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
@@ -29,14 +30,21 @@ public class KeyValueStoreController {
 
     @RequestMapping(value = "/get/{key}", method = RequestMethod.GET, produces = "application/json")
     public String getValue(@PathVariable String key) throws JsonProcessingException{
-        String value =  keyValueStoreService.getValue(key);
-        return mapper.writeValueAsString(new Response(HttpStatus.OK.value(),value));
+        String response =  keyValueStoreService.getValue(key);
+        if(ResponseMessage.KEY_NOT_AVAILABLE == response){
+            return mapper.writeValueAsString(new Response(HttpStatus.BAD_REQUEST.value(),response));
+        }else if(response.contains(ResponseMessage.NO_NODES_TO_HANDLE_SHARDS.substring(0,10))){
+            return mapper.writeValueAsString(new Response(HttpStatus.SERVICE_UNAVAILABLE.value(),response));
+        }
+        return mapper.writeValueAsString(new Response(HttpStatus.OK.value(),response));
     }
 
 
     @RequestMapping(value = "/set/{key}", method = RequestMethod.POST, produces = "application/json")
-    public String indexKeyValue(@PathVariable String key, @RequestBody String value, @RequestParam(required = false, defaultValue = "false") Boolean isRouted) throws JsonProcessingException{
-        int response = keyValueStoreService.indexKeyValue(key,value,isRouted);
-        return  mapper.writeValueAsString(new Response(HttpStatus.OK.value(),String.valueOf(response)));
+    public String indexKeyValue(@PathVariable String key, @RequestBody String value, @RequestParam(required = false, defaultValue = "false", value = "isRouted") Boolean isRouted) throws JsonProcessingException{
+        String response = keyValueStoreService.indexKeyValue(key,value,isRouted);
+        if(ResponseMessage.WRITE_OPERATION_FAILED.equals(response))
+            return mapper.writeValueAsString(new Response(HttpStatus.INTERNAL_SERVER_ERROR.value(),response));
+        return  mapper.writeValueAsString(new Response(HttpStatus.OK.value(),response));
     }
 }

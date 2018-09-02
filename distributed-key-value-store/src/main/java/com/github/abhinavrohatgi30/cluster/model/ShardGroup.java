@@ -1,5 +1,7 @@
 package com.github.abhinavrohatgi30.cluster.model;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import java.util.List;
 
 public class ShardGroup {
@@ -30,5 +32,9 @@ public class ShardGroup {
 
     public void setHashFloor(int hashFloor) {
         this.hashFloor = hashFloor;
+    }
+
+    public String toString(){
+        return ToStringBuilder.reflectionToString(this);
     }
 }
