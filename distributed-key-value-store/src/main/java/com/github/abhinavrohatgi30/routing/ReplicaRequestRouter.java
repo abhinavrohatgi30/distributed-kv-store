@@ -18,14 +18,8 @@ import java.util.List;
 @Configuration
 public class ReplicaRequestRouter implements RequestRouter {
 
-
-
     private List<Node> replicas;
     private String myGroup;
-
-    @Autowired
-    @Qualifier("walDAO")
-    private DAO walDAO;
 
     private static final Logger logger = LogManager.getLogger(ReplicaRequestRouter.class);
 

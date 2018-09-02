@@ -30,9 +30,13 @@ public class HashBasedShardGroupLocator implements ShardGroupLocator {
     }
 
     public String locate(String key){
-        int hashCode = key.hashCode();
+        int hashCode = Math.abs(key.hashCode());
         String shardGroup = shardGroupLookupMap.floorEntry(hashCode).getValue();
         logger.debug(String.format("Shard Group : %s found for the Key : %s",shardGroup,key) );
         return shardGroup;
+    }
+
+    public NavigableMap<Integer, String> getShardGroupLookupMap() {
+        return shardGroupLookupMap;
     }
 }

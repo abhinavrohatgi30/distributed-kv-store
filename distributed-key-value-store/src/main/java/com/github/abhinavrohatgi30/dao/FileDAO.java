@@ -1,6 +1,7 @@
 package com.github.abhinavrohatgi30.dao;
 
 
+import com.github.abhinavrohatgi30.util.ResponseMessage;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,18 +58,24 @@ public class FileDAO implements  DAO{
     }
 
     @Override
-    public int write(String key, String value) {
-        if(read(key) == null) {
+    public String write(String key, String value) {
+        String valueInStore = null;
+        try{
+            valueInStore = read(key);
+        }catch (Exception e){
+
+        }
+        if(valueInStore == null || valueInStore != value) {
             try {
                 FileUtils.write(dictionaryFile, String.format("%s%s%s\n", key, SEPARATOR, value),Charset.defaultCharset(),true);
                 dictionary.put(key, value);
             }catch (Exception e){
                 logger.error(String.format("Error writing the key-value pair to file -> %s : %s ", key,value));
-                return 0;
+                return ResponseMessage.WRITE_OPERATION_FAILED;
             }
             logger.info(String.format("key-value pair written to file -> %s : %s ", key,value));
         }
-        return 1;
+        return ResponseMessage.KEY_ALREADY_PRESENT;
     }
 
     @Override

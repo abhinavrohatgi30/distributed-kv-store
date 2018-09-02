@@ -8,5 +8,6 @@ public class ResponseMessage {
     public static final String WRITE_OPERATION_FAILED = "Unable to write to disk";
     public static final String WRITE_OPERATION_SUCCESS = "Successfully written";
 
+    public static final String KEY_ALREADY_PRESENT = "Key already available";
     public static final String NODE_NOT_AVAILABLE = "Node is Unavailable";
 }

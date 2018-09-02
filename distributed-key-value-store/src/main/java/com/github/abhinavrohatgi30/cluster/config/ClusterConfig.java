@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,9 +33,23 @@ public class ClusterConfig {
         shardGroups = new HashMap<>();
         Yaml clusterConfigYaml  = new Yaml();
         Map<String,Object> clusterConfigMap = clusterConfigYaml.loadAs(FileUtils.readFileToString(new File(configPath), Charset.defaultCharset()), Map.class);
+        if(!validateClusterConfig(clusterConfigMap))
+            throw new InvalidPropertiesFormatException("Please check Cluster Config Format. Refer to application logs");
         Map<String, List<String>> shardGroupMap = (Map<String, List<String>>) clusterConfigMap.get("ShardGroups");
         this.myGroup = String.valueOf(clusterConfigMap.get("MyGroup"));
         createClusterConfig(shardGroupMap);
+    }
+
+    private boolean validateClusterConfig(Map<String,Object> clusterConfigMap){
+        if(!clusterConfigMap.containsKey("ShardGroups")){
+            logger.error("Cluster Config does not contain the [ShardGroups] field");
+            return false;
+        }
+        if(!clusterConfigMap.containsKey("MyGroup")){
+            logger.error("Cluster Config does not contain the [MyGroup] field");
+            return false;
+        }
+        return true;
     }
 
     private void createClusterConfig(Map<String, List<String>> shardGroupMap){

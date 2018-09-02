@@ -4,7 +4,7 @@ public interface DAO {
 
     String read(String key);
 
-    int write(String key, String value);
+    String write(String key, String value);
 
     int delete(String key);
 }

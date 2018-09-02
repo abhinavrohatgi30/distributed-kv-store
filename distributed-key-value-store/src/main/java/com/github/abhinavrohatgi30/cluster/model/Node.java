@@ -27,4 +27,12 @@ public class Node {
         return String.format("http://%s:%s",host,port);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        Node node = (Node)obj;
+        if(node.getHost() == this.getHost() && node.getPort() == this.getPort()){
+            return true;
+        }
+        return false;
+    }
 }

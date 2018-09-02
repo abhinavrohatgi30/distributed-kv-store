@@ -44,8 +44,8 @@ public class WriteAheadLogDAO implements  DAO{
     }
 
     @Override
-    public int write(String key, String value) {
-        return 0;
+    public String write(String key, String value) {
+        return null;
     }
 
     @Override

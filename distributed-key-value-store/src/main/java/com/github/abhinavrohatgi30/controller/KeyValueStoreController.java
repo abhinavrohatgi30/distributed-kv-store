@@ -45,6 +45,8 @@ public class KeyValueStoreController {
         String response = keyValueStoreService.indexKeyValue(key,value,isRouted);
         if(ResponseMessage.WRITE_OPERATION_FAILED.equals(response))
             return mapper.writeValueAsString(new Response(HttpStatus.INTERNAL_SERVER_ERROR.value(),response));
+        else if(ResponseMessage.KEY_ALREADY_PRESENT.equals(response))
+            return mapper.writeValueAsString(new Response(HttpStatus.ALREADY_REPORTED.value(),response));
         return  mapper.writeValueAsString(new Response(HttpStatus.OK.value(),response));
     }
 }

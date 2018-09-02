@@ -18,17 +18,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FileKeyValueStoreService implements  KeyValueStoreService {
 
-    @Autowired
-    @Qualifier("fileDAO")
     private DAO dao;
 
-    @Autowired
     private ShardGroupLocator shardGroupLocator;
 
-    @Autowired
     private ClusterConfig clusterConfig;
 
     private static final Logger logger = LogManager.getLogger(FileKeyValueStoreService.class);
+
+    public FileKeyValueStoreService(@Autowired ClusterConfig clusterConfig, @Autowired @Qualifier("fileDAO") DAO dao, @Autowired ShardGroupLocator shardGroupLocator){
+        this.dao = dao;
+        this.clusterConfig = clusterConfig;
+        this.shardGroupLocator = shardGroupLocator;
+    }
 
     @Override
     public String getValue(String key) {

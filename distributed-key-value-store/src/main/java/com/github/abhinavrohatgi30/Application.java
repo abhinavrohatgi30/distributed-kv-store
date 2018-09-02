@@ -32,11 +32,6 @@ public class Application {
         return new ClusterConfig(clusterConfigPath);
     }
 
-    @Bean
-    public KeyValueStoreService keyValueStoreService(){
-        return new FileKeyValueStoreService();
-    }
-
     @Bean(name = "fileDAO")
     public DAO fileDAO(@Value("${baseFolder}") String baseFolder) throws IOException{
         return new FileDAO(baseFolder+ File.separator+"data");
