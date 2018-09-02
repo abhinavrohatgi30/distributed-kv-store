@@ -11,13 +11,14 @@ The cluster are divided into groups of shards where every node within the shard 
 
 The format of specifying a Shard Group in the configuration file is:
 
-<Shard_Group_1_Name>:
+```
+Shard_Group_1_Name:
   - Node1
   - Node2
   .
   .
   - NodeN
-<Shard_Group_2_Name>:
+Shard_Group_2_Name:
   - Node1
   - Node2
   .
@@ -26,12 +27,13 @@ The format of specifying a Shard Group in the configuration file is:
 .
 .
 .
-<Shard_Group_N_Name>:
+Shard_Group_N_Name:
   - Node1
   - Node2
   .
   .
   - NodeN
+````
 
 ### MyGroup
 This property of the configuration file saecifies the shard group of the node using the cluster configuration file.
