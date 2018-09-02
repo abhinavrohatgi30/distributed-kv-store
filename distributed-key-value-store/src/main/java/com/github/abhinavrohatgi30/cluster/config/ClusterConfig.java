@@ -3,6 +3,7 @@ package com.github.abhinavrohatgi30.cluster.config;
 import com.github.abhinavrohatgi30.cluster.model.Node;
 import com.github.abhinavrohatgi30.cluster.model.ShardGroup;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -19,19 +20,25 @@ public class ClusterConfig {
     private String myGroup;
 
     public ClusterConfig(String configPath) throws IOException{
-        Yaml clusterConfigYaml  = new Yaml();
-        Map<String, List<Map<String, String>>> clusterConfigMap = clusterConfigYaml.loadAs(FileUtils.readFileToString(new File(configPath), Charset.defaultCharset()), Map.class);
         shardGroups = new HashMap<>();
-        createClusterConfig(clusterConfigMap);
+        Yaml clusterConfigYaml  = new Yaml();
+        Map<String,Object> clusterConfigMap = clusterConfigYaml.loadAs(FileUtils.readFileToString(new File(configPath), Charset.defaultCharset()), Map.class);
+        Map<String, List<String>> shardGroupMap = (Map<String, List<String>>) clusterConfigMap.get("ShardGroups");
+        this.myGroup = String.valueOf(clusterConfigMap.get("MyGroup"));
+        createClusterConfig(shardGroupMap);
     }
 
-    private void createClusterConfig(Map<String, List<Map<String, String>>> clusterConfigMap){
-        for(Map.Entry<String,List<Map<String,String>>> entry : clusterConfigMap.entrySet()){
+    private void createClusterConfig(Map<String, List<String>> shardGroupMap){
+        float diff = Integer.MAX_VALUE*1.0f/shardGroupMap.keySet().size();
+        float hashFloor = 0.0f;
+        for(Map.Entry<String,List<String>> entry : shardGroupMap.entrySet()){
             ShardGroup group = new ShardGroup();
-            String groupName = entry.getKey();
-            List<Node> replicaNodes = entry.getValue().stream().map( m -> new Node(m.get("Host"),m.get("Port"))).collect(Collectors.toList());
+            String groupName = String.valueOf(entry.getKey());
+            List<Node> replicaNodes = entry.getValue().stream().map( u -> new Node(u)).collect(Collectors.toList());
             group.setReplicaNodes(replicaNodes);
             group.setGroupSize(replicaNodes.size());
+            group.setHashFloor(Math.round(hashFloor));
+            hashFloor+=diff;
             this.shardGroups.put(groupName,group);
         }
     }
@@ -46,5 +53,9 @@ public class ClusterConfig {
 
     public void setMyGroup(String myGroup) {
         this.myGroup = myGroup;
+    }
+
+    public String toString(){
+        return ToStringBuilder.reflectionToString(this);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -34,8 +35,8 @@ public class KeyValueStoreController {
 
 
     @RequestMapping(value = "/set/{key}", method = RequestMethod.POST, produces = "application/json")
-    public String indexKeyValue(@PathVariable String key, @RequestBody String value) throws JsonProcessingException{
-        int response = keyValueStoreService.indexKeyValue(key,value);
+    public String indexKeyValue(@PathVariable String key, @RequestBody String value, @RequestParam(required = false, defaultValue = "false") Boolean isRouted) throws JsonProcessingException{
+        int response = keyValueStoreService.indexKeyValue(key,value,isRouted);
         return  mapper.writeValueAsString(new Response(HttpStatus.OK.value(),String.valueOf(response)));
     }
 }

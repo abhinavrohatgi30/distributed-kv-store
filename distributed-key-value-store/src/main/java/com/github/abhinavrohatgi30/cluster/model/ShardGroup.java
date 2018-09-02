@@ -6,6 +6,7 @@ public class ShardGroup {
 
     private List<Node> replicaNodes;
     private int groupSize;
+    private int hashFloor;
 
     public List<Node> getReplicaNodes() {
         return replicaNodes;
@@ -21,5 +22,13 @@ public class ShardGroup {
 
     public void setGroupSize(int groupSize) {
         this.groupSize = groupSize;
+    }
+
+    public int getHashFloor() {
+        return hashFloor;
+    }
+
+    public void setHashFloor(int hashFloor) {
+        this.hashFloor = hashFloor;
     }
 }

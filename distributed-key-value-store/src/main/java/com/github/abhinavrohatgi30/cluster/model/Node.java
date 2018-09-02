@@ -3,11 +3,16 @@ package com.github.abhinavrohatgi30.cluster.model;
 public class Node {
     private String host;
     private String port;
-    private NodeType nodeType;
 
     public Node(String host, String port){
         this.host = host;
         this.port = port;
+    }
+
+    public Node(String url){
+        String[] parts = url.split("\\:");
+        this.host = parts[0];
+        this.port = parts[1];
     }
 
     public String getHost() {
@@ -18,12 +23,8 @@ public class Node {
         return port;
     }
 
-    public NodeType getNodeType() {
-        return nodeType;
-    }
-
-    public void setNodeType(NodeType nodeType){
-        this.nodeType = nodeType;
+    public String getNodeUrl(){
+        return String.format("http://%s:%s",host,port);
     }
 
 }
