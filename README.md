@@ -139,13 +139,13 @@ To retreive data from key-value store ->
 Once the cluster is up and running, you can add data to the key value store using the following command:
 
 ```
-curl -XPOST http://localhost:8900/set/foo --data "bar"
+curl -XPOST -H "Content-Type: text/plain" http://localhost:8900/set/foo --data "bar"
 ``` 
 
 You can retreive data using the following command:
 
 ``` 
-curl -XGET http://localhost:8800/get/foo
+curl -XGET -H "Content-Type: text/plain" http://localhost:8800/get/foo
 ``` 
 
 
