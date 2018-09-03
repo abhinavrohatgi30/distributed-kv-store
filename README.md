@@ -91,13 +91,13 @@ java -jar target/distributed-kv-store-1.0-SNAPSHOT.jar --server.port=8910 --base
 For Windows (Using Cygwin),
 
 ``` 
-java -jar target/distributed-kv-store-1.0-SNAPSHOT.jar --server.port=8800 --baseFolder=.\\data\\8800 --clusterConfig=..\\cluster-conf.yaml
+java -jar target/distributed-kv-store-1.0-SNAPSHOT.jar --server.port=8800 --baseFolder=.\\data\\8800 --clusterConfig=..\\cluster-conf_2.yaml
 ``` 
 
 For Linux,
 
 ``` 
-java -jar target/distributed-kv-store-1.0-SNAPSHOT.jar --server.port=8800 --baseFolder=./data/8800 --clusterConfig=../cluster-conf.yaml
+java -jar target/distributed-kv-store-1.0-SNAPSHOT.jar --server.port=8800 --baseFolder=./data/8800 --clusterConfig=../cluster-conf_2.yaml
 ``` 
 
 
@@ -107,13 +107,13 @@ java -jar target/distributed-kv-store-1.0-SNAPSHOT.jar --server.port=8800 --base
 For Windows (Using Cygwin),
 
 ``` 
-java -jar target/distributed-kv-store-1.0-SNAPSHOT.jar --server.port=8810 --baseFolder=.\\data\\8810 --clusterConfig=..\\cluster-conf.yaml
+java -jar target/distributed-kv-store-1.0-SNAPSHOT.jar --server.port=8810 --baseFolder=.\\data\\8810 --clusterConfig=..\\cluster-conf_2.yaml
 ``` 
 
 For Linux,
 
 ``` 
-java -jar target/distributed-kv-store-1.0-SNAPSHOT.jar --server.port=8810 --baseFolder=./data/8810 --clusterConfig=../cluster-conf.yaml
+java -jar target/distributed-kv-store-1.0-SNAPSHOT.jar --server.port=8810 --baseFolder=./data/8810 --clusterConfig=../cluster-conf_2.yaml
 ``` 
 
 
